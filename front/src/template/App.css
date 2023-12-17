@@ -1,0 +1,28 @@
+.Body{
+   padding-top: 110px;
+   background-color: rgba(8, 214, 214, 0);
+}
+
+/* body{
+   height: 100%;
+   background: rgba(231, 226, 226, 0.94);
+   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+   backdrop-filter: blur(8.6px);
+   -webkit-backdrop-filter: blur(8.6px);
+   border: 1px solid rgba(231, 226, 226, 0.78);
+} */
+
+/* #root{
+   background: rgba(20, 179, 94, 0.881);
+   background: blur(130px);
+   width: 100%;
+   height: 100vh;
+} */
+
+
+@media (min-height:860px){
+   .Body{
+      padding-top: 140px;
+      /* background-color: red; */
+   }   
+}

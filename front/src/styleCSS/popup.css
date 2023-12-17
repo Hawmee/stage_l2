@@ -1,0 +1,121 @@
+@media print{
+
+    #printTicket{
+        padding: 10% 0;
+        height: 100vh;
+    }
+
+    @page{
+        size: 8cm 10cm ;
+        margin: 0;
+    }
+}
+
+.main_body_popup{
+    background-color: rgba(59, 58, 58, 0.618);
+    backdrop-filter: blur(3px) ;
+    z-index: 10;
+    top: 100px;
+    width: 100%;
+    height: 86.8%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+.main_body_print{
+    margin-left: 20% ;
+    margin-top: 5%;
+    visibility:hidden;
+    background-color: rgb(255, 255, 255);
+    backdrop-filter: blur(3px) ;
+    z-index: -1;
+    top: 100px;
+    width: 60vw;
+    height:30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+.main_container_popup{
+    display: inline-block;
+    font-size: 25px;
+    background-color: #fffdfd;
+    min-width:27vw;
+    /* max-width:27vw; */
+    min-height: 25vh;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.163);
+}
+
+.popupBody{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 35px 35px;
+}
+
+#bodyPrint{
+    border: 2px solid rgba(107, 106, 106, 0.597) ;
+    border-radius: 5px;
+    padding: 10px 10px;
+    max-width: 350px;
+    text-align: center;
+}
+
+#printing{
+    text-align: left;
+    border-radius: 5px;
+    padding: 10px 35px;
+    padding-bottom: 20px;
+    /* border: 2px solid rgba(107, 106, 106, 0.597); */
+}
+.container_ticket_logo{
+    margin-bottom: 10px ;
+    display: flex;
+    justify-content: end;
+}
+
+.logo_container{
+    width: 100px;
+    border-radius: 5px;
+    text-align: center;
+    padding-right: 5px;
+    padding-top: 5px;
+    color: white;
+    background-color: rgba(20, 179, 94, 0.881);
+    border: 2px solid rgb(194, 171, 17)
+}
+.logo_ticket{
+    width: 80px;
+    height: auto;
+}
+
+.print_popup{
+    margin-top: 15px;
+}
+
+.close_container{
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+}
+.close_popup{
+    background-color: red;
+    margin-right: 10px;
+    top: 0px;  
+    cursor: pointer;
+}
+
+@media (min-height:860px){
+    .main_body_popup{
+        height: 92.1%;
+     }
+}

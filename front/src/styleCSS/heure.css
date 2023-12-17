@@ -1,0 +1,27 @@
+
+.heure_container{
+    display: inline-flex;
+    justify-content: end;
+    font-size: 25px;
+    margin-bottom: 25px ;
+    width: 38%;
+    color: rgba(237, 235, 235, 0.852) ;
+    vertical-align: 12px;
+}
+
+.heure{
+    width: 125px;
+    padding-bottom: 4px;
+
+}
+
+.heure:hover{
+    cursor: pointer;
+}
+
+@media(max-width: 650px){
+    .heure_container{
+        display: none !important;
+    }
+}
+

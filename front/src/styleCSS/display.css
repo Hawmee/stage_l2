@@ -1,0 +1,34 @@
+.main_body_display{
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main_container_display{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    background-color: #fffdfd;
+    min-width: 30vw;
+    height: 30vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.163);
+}
+
+.displayBody{
+    text-align: center;
+    vertical-align: bottom
+
+}
+
+.suivant{
+    display: none;
+}
+
+.BtnAppel , .point {
+    display: none;
+}
