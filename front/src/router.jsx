@@ -6,6 +6,7 @@ import DIsplay from "./pages/Display";
 import Call from "./pages/Call";
 import Entry from "./template/Entry";
 import Test from "./test";
+import Responsable from "./pages/responsable";
 
 
 
@@ -32,6 +33,10 @@ const router=createBrowserRouter([
             {
                 path:'/call',
                 element:<Call/>
+            },
+            {
+                path:'/manager',
+                element:<Responsable/>
             },
         ]
     },

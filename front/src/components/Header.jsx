@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link , NavLink} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTicket,faDisplay,faBullhorn,faArrowRightFromBracket,faBars, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTicket,faDisplay,faBullhorn,faArrowRightFromBracket,faBars, faUser, faUserCircle, faBusinessTime } from '@fortawesome/free-solid-svg-icons'
 import "../styleCSS/Header.css"
 import logo from '../assets/logosmmc.png'
 import Heure from './Heure';
@@ -35,7 +35,7 @@ export default function Header({onLogout , user , token }) {
                 <li id='ticket'>  <NavLink to="/" onClick={uncheck}> <FontAwesomeIcon icon={faTicket} id='i' />Tickets </NavLink></li>  
                 <li id='affichage'>  <NavLink to="/display" onClick={uncheck} > <FontAwesomeIcon icon={faDisplay} id='i' />Affichage  </NavLink> </li>
                 <li id='appel'>  <NavLink to ="/call" onClick={uncheck} > <FontAwesomeIcon icon={faBullhorn} id='i' /> Appel </NavLink></li>
-                {/* <li >  <Link to ="/" onClick={uncheck} > <FontAwesomeIcon icon={faUser} id='i' /> {usr}</Link></li> */}
+                <li id='appel'>  <NavLink to ="/manager" onClick={uncheck} > <FontAwesomeIcon icon={faBusinessTime} id='i' /> Manager </NavLink></li>
                 <li className="out"> <Link onClick={onLogout}> <FontAwesomeIcon icon={faArrowRightFromBracket} id='i2' />Logout </Link> </li>
             </ul>
         </nav>

@@ -1,7 +1,15 @@
 import React from 'react'
 
-export default function responsable() {
+export default function Responsable() {
   return (
-    <div>responsable</div>
+    <>
+        <div className='main_body_display responsable'>
+            <div className='main_container_display responsable'>
+                <div className='displayBody responsable'>
+                    HUHU
+                </div>
+            </div>
+        </div>
+    </>
   )
 }

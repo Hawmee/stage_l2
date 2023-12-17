@@ -32,3 +32,32 @@
 .BtnAppel , .point {
     display: none;
 }
+
+
+
+.main_body_display.responsable{
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main_container_display.responsable{
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    background-color: #fffdfd;
+    min-width: 40vw;
+    height: 40vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.163);
+}   
+
+.displayBody.responsable{
+    text-align: center;
+    vertical-align: bottom
+
+}
