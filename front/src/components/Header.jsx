@@ -35,7 +35,7 @@ export default function Header({onLogout , user , token }) {
                 <li id='ticket'>  <NavLink to="/" onClick={uncheck}> <FontAwesomeIcon icon={faTicket} id='i' />Tickets </NavLink></li>  
                 <li id='affichage'>  <NavLink to="/display" onClick={uncheck} > <FontAwesomeIcon icon={faDisplay} id='i' />Affichage  </NavLink> </li>
                 <li id='appel'>  <NavLink to ="/call" onClick={uncheck} > <FontAwesomeIcon icon={faBullhorn} id='i' /> Appel </NavLink></li>
-                <li id='appel'>  <NavLink to ="/manager" onClick={uncheck} > <FontAwesomeIcon icon={faBusinessTime} id='i' /> Manager </NavLink></li>
+                <li id='appel2'>  <NavLink to ="/manager" onClick={uncheck} > <FontAwesomeIcon icon={faBusinessTime} id='i' /> Manager </NavLink></li>
                 <li className="out"> <Link onClick={onLogout}> <FontAwesomeIcon icon={faArrowRightFromBracket} id='i2' />Logout </Link> </li>
             </ul>
         </nav>

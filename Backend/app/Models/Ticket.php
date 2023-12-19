@@ -11,7 +11,7 @@ class Ticket extends Model
 
     protected $fillable = [
         'num_ticket_temp',
-        'motif',
+        'service_name',
         'ticket_status',
     ];
 
@@ -19,6 +19,10 @@ class Ticket extends Model
 
     public function call(){
         return $this->hasOne(call::class, 'ticket_id', 'ticket_id');
+    }
+
+    public function service(){
+        return $this->belongsTo(Service::class , 'service_name' , 'service_name');
     }
 
 }

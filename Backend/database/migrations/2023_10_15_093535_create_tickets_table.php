@@ -16,8 +16,14 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id('ticket_id');
             $table->integer('num_ticket_temp');
-            $table->string('motif');
+
+            $table->string('service_name');
+            $table->foreign('service_name')
+                    ->references('service_name')->on('services')
+                    ->onDelete('cascade');
+
             $table->string('ticket_status')->default("En attente");
+
             $table->timestamps();
         });
     }

@@ -28,7 +28,7 @@ class TicketController extends Controller
 
     public function index()
     {
-        $tickets = Ticket::select('ticket_id','num_ticket_temp','motif','ticket_status')->orderBy('ticket_id', 'asc')->get() ;
+        $tickets = Ticket::select('ticket_id','num_ticket_temp','service_name','ticket_status')->orderBy('ticket_id', 'asc')->get() ;
         return response()->json($tickets) ;
     }
 
@@ -36,7 +36,7 @@ class TicketController extends Controller
     {
         $ticket =new Ticket;
         $ticket->num_ticket_temp = $request->num_ticket_temp ;
-        $ticket->motif = $request->motif ;
+        $ticket->service_name = $request->service_name ;
         $ticket->save() ;
         return response()->json($ticket);      
     }
@@ -52,7 +52,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrfail($id) ;
         $ticket->num_ticket_temp = $request->num_ticket_temp ;
-        $ticket->motif = $request->motif ;
+        $ticket->service_name = $request->service_name ;
         $ticket->ticket_status = $request->ticket_status ;
         $ticket->save() ;
         return response()->json($ticket);

@@ -47,7 +47,7 @@ export default function Login() {
       formAdmin.style.display = "inline-block"
       formUser.style.display = "none"
       formCont.style.height = "100vh"
-      setAdUs("Gerants")
+      setAdUs("Personnels")
     }else{
       user.style.display = "block"
       admin.style.display = "none"
@@ -113,7 +113,7 @@ export default function Login() {
     }else{
       editPage.style.display = "block"
       adminPage.style.display = "none"
-      formCont.style.height = "140vh"
+      formCont.style.height = "120vh"
       setIsSetting(true)
     }
   }

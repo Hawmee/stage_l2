@@ -26,6 +26,7 @@ class SignRequest extends FormRequest
     {
         return [
             'name'=>'required|String|max:55',
+            'service_name'=>'required|exists:services,service_name' , 
             'user_name'=>'required|String|max:25|unique:users,user_name' ,
             'password'=>'required|confirmed|min:4'
         ];

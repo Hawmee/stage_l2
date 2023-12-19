@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'user_name',
+        'service_name',
         'password',
     ];
 
@@ -46,5 +47,9 @@ class User extends Authenticatable
 
     public function call(){
         return $this->hasOne(call::class, 'user_id', 'user_id');
+    }
+
+    public function service(){
+        return $this->belongsTo(Service::class , 'service_name' , 'service_name');
     }
 }

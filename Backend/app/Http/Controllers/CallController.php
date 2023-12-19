@@ -9,21 +9,6 @@ use App\Models\call;
 class CallController extends Controller
 {
 
-    public function create()
-    {
-        //
-    }
-
-    
-    public function show()
-    {
-        //
-    }
-
-    public function edit()
-    {
-       //
-    }
 
     public function index()
     {

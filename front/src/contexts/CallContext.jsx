@@ -223,7 +223,7 @@ export const CallProvider = ({children})=>{
         if(Call.length!==data.length || data.length == 0){
           setCall(filterdata)
         }else{
-          for(let i=0 ; i<ticket.length ; i++){
+          for(let i=0 ; i<Call.length ; i++){
             if(data[i].num_ticket_temp!==Call[i].num_ticket_temp || 
             data[i].motif!==Call[i].motif || 
             data[i].ticket_status!==Call[i].ticket_status ){

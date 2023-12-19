@@ -4,6 +4,7 @@ import '../../styleCSS/ticket.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Select from 'react-select';
 import { faPlus} from '@fortawesome/free-solid-svg-icons'
 
 
@@ -15,6 +16,32 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
   const[ticket_num , setTicket_num] = useState(100)
   const [boolNum , setBoolNum] = useState(true)
   const [motif , setMotif] = useState('')
+
+  const [services , setServices] = useState(null);
+
+
+  const handleChange =(selectedOption)=>{
+    setServices(selectedOption)
+  }
+
+  const handleSubmitNew = (e)=>{
+    e.preventDefault()
+    console.log(services);
+    setServices(null)
+  }
+
+  const options = [
+    { value: 'chocolate', label: 'Service Logistique' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'chocolate', label: 'Service Logistique' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'chocolate', label: 'Service Logistique' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+    {label:'Autre'},
+  ];
   
 
   useEffect(()=>{
@@ -71,14 +98,14 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
 
 
 
-  useEffect(() => {
-    const del = document.getElementById('btn_delete')
-    if(motif.trim() !==''){
-      del.style.display = "block" 
-    }else{
-      del.style.display = "none"
-    }
-  }, [motif]);
+  // useEffect(() => {
+  //   const del = document.getElementById('btn_delete')
+  //   if(motif.trim() !==''){
+  //     del.style.display = "block" 
+  //   }else{
+  //     del.style.display = "none"
+  //   }
+  // }, [motif]);
 
 
 
@@ -244,16 +271,98 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
     setInc(0) ;
 
   }
+
+
+  const customStyle ={
+    control: (provided, state) => ({
+      ...provided,
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      border: state.isFocused ? '2px solid green' : provided.border,
+      '&:hover': {
+        borderColor: 'green',
+      },
+      boxShadow: state.isFocused ? '0 0 0 5px green' : provided.boxShadow,
+      boxShadow: state.isFocused ? null : null,
+      height: '12px',
+      minHeight: '32px',
+      marginLeft : '12px',
+      marginRight : '12px',
+      padding: '0 7px ',
+      maxWidth:'250px',
+      width:'200px',
+    }),
+
+    valueContainer: (provided) => ({
+      ...provided,
+      border: state.isFocused ? '1px solid red' : provided.border,
+      height: '28px',
+      padding: '0 12px'
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: '0px',
+      marginBottom: '5px' , 
+      paddingTop: '5px',
+
+    }),
+
+    placeholder: (provided) => ({
+      ...provided,
+      margin: '0px',
+      marginBottom: '4px' , 
+      padding: 0,
+
+    }),
+
+    valueContainer: (provided) => ({
+      ...provided,
+      margin: '0px',
+      marginBottom: '8px' , 
+      padding: 0,
+
+    }),
+
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      // Add margin to the indicator container
+      marginBottom: '10px',
+      height : '30px' ,
+      padding:'0px 0px' , 
+      backgoundColor: 'red' ,
+    }),
+
+    menu: (provided) => ({
+      ...provided,
+      // Adjust the position to appear above the select input
+      bottom: '100%',
+      top: 'auto' ,
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      // Add a max height and overflow for scrollable menu
+      maxHeight: '150px',
+      overflow: 'auto'
+    }),
+  }
   
 
   return (
     <div>
-      <form onSubmit={onAjout} className='new_ticket' id='new_ticket'>
+      <form onSubmit={handleSubmitNew} className='new_ticket' id='new_ticket'>
         <label className='label_ticket' id='label_ticket'>Ticket nᵒ{ticket_num}</label>
         <input readOnly type="text" className='ticket_num' id='ticket_num' value={ticket_num}  />
         <div className='container_motif_m'>
-          <input type="text" className='Motif' id='Motif' placeholder='Motif' onChange={remplir_motif}/>
-          <button className='btn_delete_all' type='Button' id='btn_delete' onClick={vider_motif} > X </button>
+          {/* <input type="text" className='Motif' id='Motif' placeholder='Motif' onChange={remplir_motif}/>
+          <button className='btn_delete_all' type='Button' id='btn_delete' onClick={vider_motif} > X </button> */}
+            <Select
+              placeholder = "Services"
+              styles={customStyle}
+              options={options}
+              value={services}
+              onChange={handleChange}
+              isClearable
+            />
         </div>
         <button className='btn_add' type='submit' > <FontAwesomeIcon icon={faPlus} /> Ajouter</button>
       </form>

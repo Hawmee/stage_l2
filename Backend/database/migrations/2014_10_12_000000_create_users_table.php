@@ -20,6 +20,12 @@ class CreateUsersTable extends Migration
             $table->string('user_name')->unique();
             $table->timestamp('user_name_verified_at')->nullable();
             $table->string('password');
+
+            $table->string('service_name');
+            $table->foreign('service_name')
+                    ->references('service_name')->on('services')
+                    ->onDelete('cascade');
+
             $table->rememberToken();
             $table->timestamps();
         });

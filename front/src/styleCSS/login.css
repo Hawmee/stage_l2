@@ -335,6 +335,12 @@
     align-items: center;
 } 
 
+.ServContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .formEdit{
     width: 55%;
 }
@@ -369,6 +375,10 @@
 
 .inputContainer.one{
     margin-bottom: 4vh;
+}
+
+.inputContainer.two{
+    margin-top: 20px;
 }
 
 
