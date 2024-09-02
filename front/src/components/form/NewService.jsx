@@ -13,22 +13,28 @@ export default function NewService({isNewServ , setIsNewServ ,  setServValue}) {
 
 
    const exist = (element)=>{
-      const isexist = services.some(service=> service.service_name == element)
-      return isexist
+      if(services){
+         const isexist = services.some(service=> service.service_name == element)
+         return isexist
+      }
    }
   
   const Ajout = async(payload)=>{
    try{
       const result = await axios.post(UrlServ , payload)
-      // setTicket((x)=>[...x , ajout_data])
+      setServices((x)=>[...x , payload])
    }catch(error){
       console.log(error)
    }
   }
 
+  const capitalize = (word) => {
+   return word.charAt(0).toUpperCase() + word.slice(1);
+   };
+
    const onSubmit = (e)=>{
       e.preventDefault()
-      const service = ServiceRef.current.value
+      const service = capitalize(ServiceRef.current.value)
       const isexist = exist(service)
 
       const payload = {

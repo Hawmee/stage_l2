@@ -8,8 +8,6 @@ use App\Models\call;
 
 class CallController extends Controller
 {
-
-
     public function index()
     {
         $call = call::select('call_id', 'ticket_id' ,'Call_Status')->orderBy('call_id', 'asc')->get() ;
@@ -39,17 +37,16 @@ class CallController extends Controller
         // return response()->json($Call);
         
         $tiket=Ticket::findOrFail($tiketId) ;
-        $call = $tiket->call ; 
+        $call = $tiket->call ;
         
         if($call){
             $call->Call_Status = $request->Call_Status ;
-            $call->ticket_id = $request->ticket_id ; 
-            $call->save() ; 
-            return response()->json($call); 
+            $call->ticket_id = $request->ticket_id ;
+            $call->save() ;
+            return response()->json($call);
         }else{
             return response()->json(['error'=>"Ce tiket n'est plus disponible"]) ;
         }
-    
     }
 
     public function destroy($tiketId)

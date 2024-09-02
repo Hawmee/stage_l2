@@ -3,19 +3,21 @@ import { ToastContainer, toast } from 'react-toastify';
 import { debounce } from 'lodash';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+import { useCallData } from "./CallContext";
 
 const StateContext = createContext( {
     user: null , 
     token: null ,
     AdUs: 'Client' , 
     label_call_app: 'Appeler' , 
-    services : [] ,
+    options : [] ,
+    optionsTicket : [] ,
     setUser: ()=>{} ,
     setToken: ()=>{} , 
     setAdUs: ()=>{} , 
     setLabel_call_app: ()=>{} , 
     Notify : ()=>{} ,
-    setServices: ()=>{}
+    setServices : ()=>{}
 })
 
  export const ContextProvider = ({children})=>{
@@ -25,7 +27,11 @@ const StateContext = createContext( {
     const [label_call_app , setLabel_call_app] = useState("Appeler")
     const UrlServ = 'http://127.0.0.1:8000/api/services'
     const [services , setServices] = useState([])
+    const [optionsTicket , setOptionsTicket] = useState([])
+    const [options , setOptions] = useState([])
     const onLogoutRef = useRef()
+
+    const {Call} = useCallData()
 
     const setToken =(token)=>{
         _setToken(token)
@@ -48,28 +54,21 @@ const StateContext = createContext( {
         })
     }
 
-    const fetchServices = useCallback(()=>{
+    const fetchServices = ()=>{
         axios
         .get(UrlServ)
         .then(response =>{
           const data = response.data
-          if(services.length!==data.length || data.length == 0){
+          if(services.length!==data.length || services.length == 0){
             setServices(data)
           }else{
-            for(let i=0 ; i<services.length ; i++){
-              if(data[i].service_name!==services[i].service_name ){
-                setServices(data)
-              }
-              else{
-                return
-              }
-            }
+            return
           }
         })
         .catch(error=>{
           console.error("error fetching :" , error)
         })
-    } , [])
+    } 
 
     useEffect(()=>{
         const debounce_services = debounce(fetchServices , 1000)
@@ -78,7 +77,31 @@ const StateContext = createContext( {
         return ()=>{
             debounce_services.cancel()
           }
-    } , [services])
+    } , [services , Call])
+
+    useEffect(()=>{
+        let optionTemp = []
+        let optionTempTicket = []
+        if(services.length > 0 ){
+           optionTemp = services.map(service=>({
+              label:service.service_name
+           }))
+           optionTempTicket = services.map(service=>({
+            label:service.service_name
+         }))
+          optionTempTicket.unshift({label: "Autre"})
+           setOptionsTicket(optionTempTicket.filter(option => option.label !== 'Acceuil'))
+           optionTemp.unshift({ label: "Ajouter" })
+           setOptions(optionTemp)   
+        }else{
+          optionTemp.unshift({ label: "Ajouter" })
+          optionTempTicket.unshift({label: "Autre"})
+          setOptions(optionTemp)
+          setOptionsTicket(optionTempTicket.filter(option => option.label!=='Acceuil'||option.label!=='acceuil' ))
+        }
+     },[services])
+
+    // console.log(user)
 
     return(
         <StateContext.Provider value={{
@@ -87,13 +110,14 @@ const StateContext = createContext( {
             AdUs ,
             label_call_app , 
             onLogoutRef ,
-            services ,
+            options ,
+            optionsTicket ,
             setUser ,
             setToken ,
             setAdUs ,
-            setLabel_call_app,
-            setServices , 
-            Notify
+            setLabel_call_app, 
+            Notify,
+            setServices
         }}>
             {children}
         </StateContext.Provider>

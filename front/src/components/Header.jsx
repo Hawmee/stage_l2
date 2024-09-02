@@ -28,14 +28,20 @@ export default function Header({onLogout , user , token }) {
     <div>
         <nav>
             <input type="checkbox" id="check" />
-            <label htmlFor="check" className="btn_min"><FontAwesomeIcon icon={faBars} /></label>            
+            <label htmlFor="check" className="btn_min"><FontAwesomeIcon icon={faBars} /></label>
             <Link to="/"><img src={logo} alt="" className="logo" /></Link>
             <Heure />
             <ul>
                 <li id='ticket'>  <NavLink to="/" onClick={uncheck}> <FontAwesomeIcon icon={faTicket} id='i' />Tickets </NavLink></li>  
                 <li id='affichage'>  <NavLink to="/display" onClick={uncheck} > <FontAwesomeIcon icon={faDisplay} id='i' />Affichage  </NavLink> </li>
                 <li id='appel'>  <NavLink to ="/call" onClick={uncheck} > <FontAwesomeIcon icon={faBullhorn} id='i' /> Appel </NavLink></li>
-                <li id='appel2'>  <NavLink to ="/manager" onClick={uncheck} > <FontAwesomeIcon icon={faBusinessTime} id='i' /> Manager </NavLink></li>
+                {/* <li id='appel2'>  <NavLink to ="/manager" onClick={uncheck} > <FontAwesomeIcon icon={faBusinessTime} id='i' /> Manager </NavLink></li> */}
+                {/* <li className='identity'>
+                  <div className='Profile'> <FontAwesomeIcon icon={faUserCircle} /></div>
+                  <p className='Profile_name'>
+                    Info
+                  </p>
+                </li> */}
                 <li className="out"> <Link onClick={onLogout}> <FontAwesomeIcon icon={faArrowRightFromBracket} id='i2' />Logout </Link> </li>
             </ul>
         </nav>

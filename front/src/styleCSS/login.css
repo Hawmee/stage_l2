@@ -58,7 +58,7 @@
     height: 20%;
     display: block;
     padding: 5% 0;
-    margin-bottom: 8%;
+    margin-bottom: 3%;
 }
 
 .userContainer{
@@ -336,6 +336,7 @@
 } 
 
 .ServContainer{
+    margin-top: 3vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -374,7 +375,8 @@
 }
 
 .inputContainer.one{
-    margin-bottom: 4vh;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
 }
 
 .inputContainer.two{

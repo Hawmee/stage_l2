@@ -26,7 +26,7 @@ export default function TableTicket({fetchData , ticket , scrollContainerRef ,sc
           <thead>
             <tr>
               <th>Ticket</th>
-              <th>Motif</th>
+              <th>Service visé</th>
               <th>Status du Ticket</th>
               <th>Actions</th>
             </tr>

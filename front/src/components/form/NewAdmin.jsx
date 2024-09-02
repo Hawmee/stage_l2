@@ -8,7 +8,7 @@ import NewService from './NewService'
 
 export default function NewAdmin({newUser}) {
 
-   const {setUser , setToken , token , user , Notify , services , setServices} = useStateContext()
+   const {setUser , setToken , token , user , Notify , options } = useStateContext()
    const [err , setErr] = useState(null)
    const [servValue , setServValue]= useState(null)
    const nameRef = useRef();
@@ -17,8 +17,6 @@ export default function NewAdmin({newUser}) {
    const passwordRef = useRef();
    const passwordConfirmationRef = useRef();
    const [isNewServ ,  setIsNewServ]=useState(false)
-   const [options , setOptions] = useState([])
-   // let options = []
 
    const inFocus =( inputValue , inputElement)=>{
       const parentDivE = inputElement.closest('.inputContainer')
@@ -70,21 +68,8 @@ export default function NewAdmin({newUser}) {
 
 
    useEffect(()=>{
-      let optionTemp = []
-      if(services.length > 0 ){
-         optionTemp = services.map(service=>({
-            label:service.service_name
-         }))
-         optionTemp.unshift({ label: "Ajouter" })
-         setOptions(optionTemp)   
-      }
-   },[services])
-
-
-   useEffect(()=>{
       if(isNewServ){
          console.log("okok");
-         // setIsNewServ(false)
       }
    } , [isNewServ])
 
@@ -92,21 +77,17 @@ export default function NewAdmin({newUser}) {
    const customStyle = {
       control: (provided, state) => ({
          ...provided,
-         // backgroundColor: 'transparent',
-         // boxShadow: 'none',
-         border: state.isFocused ? '2px solid white' : provided.border,
+
+         border: state.isFocused ? '2px solid  rgb(37, 152, 201)' : provided.border,
          '&:hover': {
-           borderColor: 'white',
+           borderColor: ' rgb(37, 152, 201)',
          },
          boxShadow: state.isFocused ? '0 0 0 5px white' : provided.boxShadow,
-         boxShadow: state.isFocused ? null : null,
-         // height: '12px',
-         // minHeight: '32px',
          marginLeft : '12px',
          marginRight : '12px',
          padding: '0 7px ',
-         maxWidth:'350px',
-         width:'300px',
+         maxWidth:'150px',
+         width:'500px',
        }),
        menuList: (provided) => ({
          ...provided,
@@ -115,6 +96,12 @@ export default function NewAdmin({newUser}) {
          overflow: 'auto',
          color: 'grey'
        }),
+       option: (provided, state) => ({
+         ...provided,
+         backgroundColor: state.isSelected ? 'white' : state.isFocused ? 'lightgray' : null,
+         color: "grey"
+       }),
+       
    }
 
 
@@ -122,10 +109,7 @@ export default function NewAdmin({newUser}) {
       setServValue(selectedOption)
    }
 
-   // function submit(e){
-   //    e.preventDefault();
-   //    console.log(isNewServ);
-   // }
+
 
    useEffect(()=>{
       if(servValue && servValue.label == "Ajouter"){
@@ -142,6 +126,16 @@ export default function NewAdmin({newUser}) {
       <form className="formEContainer" onSubmit={onSubmit}>
          <div className='formEdit'>
 
+         <div className="ServContainer">
+               <Select
+                  options={options}
+                  styles={customStyle}
+                  onChange={handlevalue}
+                  value={servValue}
+                  placeholder='Services'
+                  isClearable />
+            </div>
+
             <div className='inputContainer one '>
                <div className='icon' >
                   <i><FontAwesomeIcon icon={faUser} /></i>
@@ -157,30 +151,6 @@ export default function NewAdmin({newUser}) {
                </div>
             </div>
 
-            {/* <div className='inputContainer one '>
-               <div className='icon' >
-                  <i><FontAwesomeIcon icon={faHomeUser} /></i>
-               </div>
-               <div>
-                  <h5>  Poste </h5>
-                  <input
-                     ref={postRef}
-                     className='inputform' 
-                     type="text" 
-                     onFocus={(e)=>{inFocus(e.target.value , e.target)}}
-                     onBlur={(e)=>{inFocus(e.target.value , e.target)}} />
-               </div>
-            </div> */}
-            
-            <div className="ServContainer">
-               <Select
-                  options={options}
-                  styles={customStyle}
-                  onChange={handlevalue}
-                  value={servValue}
-                  placeholder='Services'
-                  isClearable />
-            </div>
 
             <div id="newPass">
                <div className='inputContainer two '>

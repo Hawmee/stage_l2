@@ -1,10 +1,13 @@
 import axios from "axios";
 import { debounce } from 'lodash';
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useStateContext } from "./ContextProvider";
 
 const CallContext = createContext({
   desactive_call : ()=>{} ,
-  noResp : ()=>{}
+  logingOut : ()=>{},
+  noResp : ()=>{},
+  idUser: ''
 })
 
 export const CallProvider = ({children})=>{
@@ -15,8 +18,21 @@ export const CallProvider = ({children})=>{
     const urlCall = 'http://127.0.0.1:8000/api/tickets/'
     const urlCall_status = 'http://127.0.0.1:8000/api/calls/'
     const table= document.getElementById('table')
-  
+    const [servName , setServName] = useState('')
+    const [idUser , setIdUser]=useState('')
 
+
+    const {user} = useStateContext()
+
+
+    useEffect(()=>{
+      if(user && user.service_name){
+        setServName(user.service_name)
+        setIdUser(user.user_id)
+      }
+      // console.log(servName);
+    } , [user])
+  
 
     const add_status= async($ticket_id , user_id)=>{
       const status = {
@@ -36,11 +52,11 @@ export const CallProvider = ({children})=>{
     }
 
     const En_Appel= (id)=>{
-      const num = Call[0].num_ticket_temp
-      const motif = Call[0].motif
+      const num = Call[0].num_ticket_temp 
+      const service_name = Call[0].service_name 
       const ticket_status ={
         num_ticket_temp: num ,
-        motif: motif,
+        service_name: service_name , 
         ticket_status:'En appel'
       }
       axios.put(urlCall+id , ticket_status)
@@ -50,7 +66,7 @@ export const CallProvider = ({children})=>{
       const num = Call[0].num_ticket_temp
       const ticket_actu ={
         num_ticket_temp: num ,
-        motif: Call[0].motif,
+        service_name: Call[0].service_name,
         ticket_status:'Appelé'
       }
       axios.put(urlCall+TicketId , ticket_actu)    
@@ -70,25 +86,47 @@ export const CallProvider = ({children})=>{
 
       if(Call[0]){
         const num = Call[0].num_ticket_temp
-        const motif = Call[0].motif
+        const service_name = Call[0].service_name
         const ticket_status ={
           num_ticket_temp: num ,
-          motif: motif,
+          service_name: service_name,
           ticket_status:'En attente'
         }
 
-        const findId = isAffiche.some((item)=>item.ticket_id == TicketId)
+        const findId = isAffiche.find((item)=>item.ticket_id == TicketId)
         if(findId){
           const modif = {
-            ticket_id: TicketId , 
+            ticket_id: findId.ticket_id , 
             Call_Status: 0 ,
           }
+          // console.log(modif)
           axios.put(urlCall_status+TicketId , modif )
         }
 
         axios.put(urlCall+TicketId , ticket_status)
       }
 
+    }
+
+
+    const logingOut = (TicketId)=>{
+      const find = Call.find(item=>item.ticket_id==TicketId)
+      if(find){
+        const num = find.num_ticket_temp
+        const service_name = find.service_name
+        const ticket_status ={
+          num_ticket_temp: num ,
+          service_name: service_name,
+          ticket_status:'En attente'
+        }
+
+        const findId = isAffiche.some((item)=>item.ticket_id == TicketId)
+        if(findId){
+          zeroStat(TicketId)
+        }
+
+        axios.put(urlCall+TicketId , ticket_status)
+      }
     }
 
     const affiche_call= (TicketId)=>{
@@ -120,13 +158,13 @@ export const CallProvider = ({children})=>{
       
       const modif_actu ={
         num_ticket_temp: suivant.num_ticket_temp ,
-        motif: suivant.motif,
+        service_name: suivant.service_name,
         ticket_status:'En attente'
       }
 
       const modif_suiv ={
         num_ticket_temp: actu.num_ticket_temp ,
-        motif : actu.motif ,
+        service_name : actu.service_name ,
         ticket_status: "En attente"
       }
 
@@ -191,11 +229,10 @@ export const CallProvider = ({children})=>{
         const data = response.data
 
         if(Call.length>0){
-          const callTicketId = Call[0].ticket_id 
+          const callTicketId = Call[0].ticket_id
           const filterdata = data.filter(
-            (item)=> item.ticket_id == callTicketId 
+            (item)=> item.ticket_id==callTicketId
           )
-
           const dataSt = JSON.stringify(data)
           const isAfficheSt = JSON.stringify(isAffiche)
 
@@ -208,38 +245,39 @@ export const CallProvider = ({children})=>{
       })
     }
 
+    // console.log(idUser)
 
 
 
 
-    const fetchData = useCallback(() =>{
-      axios
-      .get(urlCall)
-      .then(response =>{
-        const data = response.data
-        const filterdata = data.filter(
-          (item)=> item.ticket_status === 'En attente' || item.ticket_status === 'En appel'
-        )
-        if(Call.length!==data.length || data.length == 0){
-          setCall(filterdata)
-        }else{
-          for(let i=0 ; i<Call.length ; i++){
-            if(data[i].num_ticket_temp!==Call[i].num_ticket_temp || 
-            data[i].motif!==Call[i].motif || 
-            data[i].ticket_status!==Call[i].ticket_status ){
-              setCall(filterdata)
-            }
-            else{
-              return
+    const fetchData = () =>{
+        axios
+        .get(urlCall)
+        .then(response =>{
+          const data = response.data
+          const filterdata = data.filter(
+            (item)=> ( item.service_name == user.service_name &&(item.ticket_status === 'En attente' || item.ticket_status === 'En appel'))
+          )
+          if(Call.length!==data.length || data.length == 0){
+            setCall(filterdata)
+          }else{
+            for(let i=0 ; i<Call.length ; i++){
+              if(data[i].num_ticket_temp!==Call[i].num_ticket_temp || 
+              data[i].service_name!==Call[i].service_name || 
+              data[i].ticket_status!==Call[i].ticket_status ){
+                setCall(filterdata)
+              }
+              else{
+                return
+              }
             }
           }
-        }
-        // setCall(filterdata)
-      })
-      .catch(error=>{
-        console.error("error fetching :" , error)
-      })
-    },[])
+          // setCall(filterdata)
+        })
+        .catch(error=>{
+          console.error("error fetching :" , error)
+        })
+    }
 
 
 
@@ -265,21 +303,23 @@ export const CallProvider = ({children})=>{
 
 
 
-
+    const debounce_status = debounce(fetch_status, 1000)
     useEffect(() => {
-      const debounce_status = debounce(fetch_status,1000)
       debounce_status()
 
       return ()=>{
         debounce_status.cancel()
       }
-    }, [Call]);
+    }, [Call , isAffiche]);
 
 
 
 
     return (
         <CallContext.Provider value={{ 
+          idUser ,
+          servName ,
+          urlCall ,
           Call, 
           setCall , 
           fetchData , 
@@ -298,6 +338,7 @@ export const CallProvider = ({children})=>{
           suivant , 
           En_fil , 
           desactive_call,
+          logingOut,
           noResp }}>
           {children}
         </CallContext.Provider>

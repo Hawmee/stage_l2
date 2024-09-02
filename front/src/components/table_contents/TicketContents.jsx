@@ -3,11 +3,14 @@ import '../../styleCSS/ticket.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare , faPrint} from '@fortawesome/free-solid-svg-icons'
 import Ticket from '../../pages/Ticket'
+import { useStateContext } from '../../contexts/ContextProvider'
 
 
 
 export default function TicketContents({ticket , setMotif_modif }) {
-  const {ticket_id ,num_ticket_temp , motif , ticket_status} = ticket
+  const {ticket_id ,num_ticket_temp , service_name , ticket_status} = ticket
+
+  const {Notify} = useStateContext()
   
   function afficheForm(){
     const newTicket = document.getElementById('new_ticket')
@@ -23,27 +26,32 @@ export default function TicketContents({ticket , setMotif_modif }) {
 
   function onEdit(){
     // setTick(ticket)
-    afficheForm()
-    const label = document.getElementById('label_m')
-    const id = document.getElementById('ticket_num_m')
-    const motf =document.getElementById('Motif_m')
-    const stat = document.getElementById('ticket_stat_m')
-
-    const val_motif = motif
-    const val_id = ticket.ticket_id
-    const ticknum = num_ticket_temp
-    const val_stat = ticket_status  
-
-    label.innerText = "Ticket nᵒ"+ticknum
-    id.value = val_id
-    motf.value = val_motif
-    stat.value = val_stat
-    setMotif_modif(val_motif)
+    if(ticket_status=="En attente"){
+      afficheForm()
+      const id = document.getElementById('ticket_num_m')
+      const stat = document.getElementById('ticket_stat_m')
+      const label = document.getElementById('label_m')
+  
+      const val_id = ticket_id
+      const ticknum = num_ticket_temp
+      const val_stat = ticket_status  
+  
+      label.innerText = "Ticket nᵒ"+ticknum
+      id.value = val_id
+      stat.value = val_stat
+    }else{
+      const error = "Cette action ne peut etre executée ."
+      Notify(error)
+    }
+    // setMotif_modif(val_motif)
   }
+
+
+  // motif est remplacé par service_name
 
   function onPrint(){
     const numero = "Ticket: nᵒ"+num_ticket_temp
-    const motif_text = "Motif: "+motif
+    const motif_text = "Service : "+service_name
     const numero_place = document.getElementById('numero_ticket')
     const motif_place = document.getElementById('motif_ticket')
     const numero_place_print = document.getElementById('numero_ticket_print')
@@ -61,7 +69,7 @@ export default function TicketContents({ticket , setMotif_modif }) {
     <>
       <tr>
         <td>nᵒ {num_ticket_temp}</td>
-        <td> {motif}</td>
+        <td> {service_name}</td>
         <td> { ticket_status } </td>
         <td> 
           <button className='btn_modif'  onClick={onEdit}> <FontAwesomeIcon icon={faPenToSquare} /></button> 

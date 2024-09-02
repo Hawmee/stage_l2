@@ -49,6 +49,11 @@ nav ul li  #i , nav ul li  #i2 {
     font-size: 18px;
 }
 
+/* .out{
+    background-color: red;
+    margin-left: 3vh;
+} */
+
 
 
 .active , .active #i{
@@ -94,6 +99,37 @@ li:hover a , li:hover #i , li.active a , li.active #i{
     color: rgba(20, 179, 94, 0.881) ;
     transition: .2s;
 } */
+
+
+.identity{
+    /* background-color: red; */
+    width: 10vh;
+    padding-left: 3vh;
+    padding-bottom: 5px;
+    border-left: 2px solid white;
+    margin-right: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Profile{
+    /* background-color: red; */
+    font-size: 23px;
+    color: white;
+    text-align: center;
+}
+
+.Profile_name{
+    /* margin-top: 2px; */
+    color: white;
+    padding-top: 3px;
+    text-align: center;
+    /* background-color: red; */
+    width: 95px ;
+    overflow: hidden;
+}
 
 @media (max-width: 952px){
 

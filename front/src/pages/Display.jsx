@@ -8,7 +8,7 @@ import "../styleCSS/display.css"
 export default function DIsplay() {
   const { affichage , affiche_call , Call , fetchData , isAffiche , setIsAffiche , display , setAffichage  } = useCallData();
 
-  const debouncefetch = debounce(fetchData , 2000)
+  const debouncefetch = debounce(fetchData , 1000)
   useEffect(() => {
      debouncefetch()
      return () => {
@@ -26,14 +26,14 @@ export default function DIsplay() {
   },[isAffiche , Call])
 
   const num = affichage.num_ticket_temp ;
-  const motif = affichage.motif
+  const service = affichage.service_name
 
   return (
     <>
     <div className='main_body_display'>
       <div className='main_container_display'>
           <div className='displayBody'>
-            <DisplayOutput  num={num} motif={motif} isAffiche={isAffiche} />
+            <DisplayOutput  num={num} service={service} isAffiche={isAffiche} />
           </div>
       </div>
     </div>

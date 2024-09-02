@@ -11,6 +11,7 @@ import axiosClient from "../axios-client"
 function App() {
   const storageKey = 'ACCESS_TOKEN'
   const {token , user , label_call_app , onLogoutRef , setToken , setUser  ,setAdUs  }= useStateContext()
+  let inc = 0
 
   if(!token){
     return (
@@ -18,7 +19,7 @@ function App() {
     )
   }
 
-  console.log(user);
+  // console.log(user);
 
   useEffect(()=>{
     const HandleLogin = (ev)=>{
@@ -60,10 +61,14 @@ function App() {
       setToken(null)
     }
 
-    if(label_call_app == "Pauser"){
+    if(label_call_app=="Pauser"||label_call_app=="Appeler"){
       if(onLogoutRef.current){
         onLogoutRef.current.click()
       }
+    }
+
+    if(onLogoutRef.current){
+      onLogoutRef.current.click()
     }
     
   }
@@ -78,6 +83,11 @@ function App() {
         setUser(data)
       })
     }
+
+    if(user){
+      return
+    }
+
   },[token])
 
 
@@ -93,11 +103,11 @@ function App() {
       setUser(UserIdentifcation)
     }
 
-    console.log(user)
+    
   } ,[user , token] )
 
 
-
+  // console.log(user)
 
   return (
 

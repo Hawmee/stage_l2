@@ -4,14 +4,14 @@ import { useCallData } from '../../contexts/CallContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTicket,faDisplay,faBullhorn,faArrowRightFromBracket,faBars, faUser, faMicrochip, faMicrophone, faPersonArrowDownToLine, faSortNumericDown, faArrowsDownToPeople, faTentArrowsDown, faSortDown, faArrowDownUpLock, faArrowsDownToLine, faLevelDown, faPauseCircle, faCirclePause, faPause, faStopCircle, faWarning, faUserLock, faUserAlt, faUserSlash, faSlash, faChainSlash, faEyeSlash, faTextSlash, faStoreSlash, faVideoSlash, faUsersSlash, faDiagramNext, faAlignRight, faRightToBracket, faAngleDoubleLeft, faAngleRight, faArrowRight, faRightLong, faRightLeft, faAngleDoubleRight, faTicketAlt, faTicketSimple, faCheckCircle, faCheckSquare, faCheck, faUsers } from '@fortawesome/free-solid-svg-icons'
 
-export default function DisplayCall({num , motif , isAffiche , activate , suivant , En_fil , call , setAffichage , add}) {
+export default function DisplayCall({num , service , isAffiche , activate , suivant , En_fil , call , setAffichage , add}) {
   const [label_call , setLabel_call] = useState("Appeler")
   const [suivant_terminer , setSuivant_terminer] = useState("teminer")
   const [skip , setSkip] = useState("Mettre en fil")
   const [index , setIndex] = useState(1)
   const { user ,onLogoutRef ,  setLabel_call_app} = useStateContext()
 
-  const {desactive_call , noResp} = useCallData()
+  const {desactive_call , noResp , logingOut} = useCallData()
 
 
 
@@ -21,7 +21,8 @@ export default function DisplayCall({num , motif , isAffiche , activate , suivan
       const pauseBtn = document.getElementById('pause') 
       const norespBtn = document.getElementById('no_resp')
       const suivantBtn = document.getElementById('suivant')
-      if(isAffiche.length > 0){
+      // console.log(isAffiche)
+      if(isAffiche.length>0){
          if(isAffiche[0].Call_Status == 0){
             setLabel_call("Appeler")
             callBtn.style.display = "inline-block"
@@ -65,7 +66,7 @@ export default function DisplayCall({num , motif , isAffiche , activate , suivan
    } ,[call])
 
 
-
+   // console.log(isAffiche);
 
    function onCall(){
       if(call.length>0){
@@ -134,9 +135,12 @@ export default function DisplayCall({num , motif , isAffiche , activate , suivan
    }
   
    function onLogout() {
-      if(call[0]){
-         const TicketId = call[0].ticket_id
-         desactive_call(TicketId)
+      if(isAffiche[0]){
+         const TicketId = isAffiche[0].ticket_id
+         logingOut(TicketId)
+         // console.log(TicketId)
+      }else{
+         // console.log("Huhu");
       }
    }
 
@@ -146,8 +150,8 @@ export default function DisplayCall({num , motif , isAffiche , activate , suivan
          <div className='body_display_container'>
          <h3>Appeler :</h3>
             <div className='display_call' >
-               <p>Ticket: nᵒ {num}</p>
-               <p>Motif: {motif}</p>
+               <p>Ticket:  {num}</p>
+               <p>Service visé: {service}</p>
             </div>
             <div className='first_btn_div'>
                <button className='Btn_call' onClick={onCall} >
@@ -155,7 +159,7 @@ export default function DisplayCall({num , motif , isAffiche , activate , suivan
                   <i id="pause" style={{ display:'none' }} > <FontAwesomeIcon icon={faPause} />  </i>            
                </button>
                <button onClick={onSuivant} className='suivant' id='suivant'> <FontAwesomeIcon icon={faCheck} /> </button>
-               <button onClick={onLogout} ref={onLogoutRef} style={{ display:'none' }} >here</button>
+               <button onClick={onLogout} ref={onLogoutRef} style={{ display: 'none' }}  >here</button>
                <button onClick={onNoResp} id='no_resp'> <FontAwesomeIcon icon={faUserSlash} /> </button>
             </div>
             <div className='second_btn_div'>

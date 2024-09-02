@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Select from 'react-select';
 import { faPlus} from '@fortawesome/free-solid-svg-icons'
+import { useStateContext } from '../../contexts/ContextProvider';
 
 
 export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll , setScroll  ,setInc , motif_modif , setMotif_modif}) {
@@ -18,6 +19,9 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
   const [motif , setMotif] = useState('')
 
   const [services , setServices] = useState(null);
+  const{optionsTicket} = useStateContext()
+
+  const [autre , setAutre ] = useState(null)
 
 
   const handleChange =(selectedOption)=>{
@@ -74,7 +78,7 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
       var min = dateTime.getMinutes();
       var sec = dateTime.getSeconds();
 
-      if((hr===0 && min===0 && sec===0) || (hr==12 && min===39 && sec===0)){
+      if((hr===0 && min===0 && sec===0) || (hr==10 && min===32 && sec===0)){
         setBoolNum(false)
         setTicket_num(num_base)
       }
@@ -96,42 +100,15 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
     }
   },[ticket])
 
-
-
-  // useEffect(() => {
-  //   const del = document.getElementById('btn_delete')
-  //   if(motif.trim() !==''){
-  //     del.style.display = "block" 
-  //   }else{
-  //     del.style.display = "none"
-  //   }
-  // }, [motif]);
-
-
-
-
   useEffect(()=>{
-    const del = document.getElementById('btn_del')
-    if(motif_modif.length >0){
-      del.style.display = "block"
-    }else{
-      del.style.display = "none"
+    if(services && services.label == "Autre"){
+      setServices({label:"Acceuil"})
     }
-  },[motif_modif])
-
-
-
-
-  const remplir_motif=(e)=>{
-    const value = e.target.value 
-    setMotif(value)
-  }
-
-
+  },[services])
 
 
   const notify = ()=> {
-    toast.error('Veuillez verifier votre saisie!', {
+    toast.error('Veuillez verifier votre saisie choisir le service correspondant à votre demande.', {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -140,35 +117,6 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
       draggable: true,
       theme: "light",
       });
-  }
-
-
-
-
-
-  const remplir_modif=(e)=>{
-    const value = e.target.value
-    setMotif_modif(value)
-  }
-
-
-
-
-
-  const vider_motif = ()=>{
-    const motif_content = document.getElementById('Motif')
-    motif_content.value = ""
-    setMotif('')
-  }
-
-
-
-
-
-  const vider_modif = ()=>{
-    const modif_content = document.getElementById('Motif_m')
-    modif_content.value = ""
-    setMotif_modif('')
   }
 
 
@@ -188,14 +136,12 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
     setTicket_num((numPrev)=> numPrev+1)
     setScroll(true)
     setBoolNum(false)
-    const motif_m = document.getElementById('Motif')
-    motif_m.value = ""
   }
 
   const Ajout = async (ajout_data)=>{
     try{
       const result = await axios.post(url , ajout_data)
-      setTicket((x)=>[...x , ajout_data])      
+      // setTicket((x)=>[...x , ajout_data])      
     }catch(error){
       console.log(error)
     }
@@ -206,31 +152,30 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
     const ticket_num = document.getElementById('ticket_num') ;
     const ticket_num_value = ticket_num.value ;
 
-    const isEmpty= motif.trim()=='' ;
-    const HasSpec = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(motif) ;
-    const istoolong = motif.length >30 ;
-    const isNumber = /\d/.test(motif) ;
+    if(services){
 
-    if (isEmpty || HasSpec || istoolong || isNumber) {
-      notify() ;
-      return ;
+      const ajout_data = {
+        num_ticket_temp: ticket_num_value ,
+        service_name: services.label ,
+        ticket_status:"En attente"
+      }
+
+      Ajout(ajout_data ) ;
+      setServices(null)
+      increment_num_ticktet() ;
+    }else{
+      notify()
     }
-    const ajout_data = {
-      num_ticket_temp: ticket_num_value ,
-      motif: motif ,
-      ticket_status:"En attente"
-    }
-    Ajout(ajout_data ) ;
-    increment_num_ticktet() ;
-    vider_motif()
+
   }
 
 
 
 
-  const Modif = async (id , updated_motif)=>{
+  const Modif = async (id , updated_serv)=>{
     try{
-      const result = await axios.put(url+id , updated_motif) ;
+      const result = await axios.put(url+id , updated_serv) ;
+      console.log(result);
     }catch(error){
       console.log(error) ;
     }
@@ -250,25 +195,22 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
     const value_status = status.value ;
     const num = parseInt(value_num.replace('Ticket nᵒ',''),10) ;
 
-    const isEmpty= motif_modif.trim()=='' ;
-    const HasSpec = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(motif_modif) ;
-    const istoolong = motif_modif.length >30 ;
+    if(services){
+      const update_data = {
+        ticket_id : value_id ,
+        num_ticket_temp: num ,
+        service_name: services.label ,
+        ticket_status: value_status
+      }
 
-    if(isEmpty || HasSpec || istoolong){
-      notify() ;
-      return ;
+      Modif(value_id , update_data) ;
+      afficheForm() ;
+      setInc(0) ;
+      setServices(null)
+      console.log(update_data)
+    }else{
+      notify()
     }
-
-    const update_data = {
-      num_ticket_temp: num ,
-      motif: motif_modif ,
-      ticket_status: value_status
-    }
-
-    Modif(value_id , update_data) ;
-
-    afficheForm() ;
-    setInc(0) ;
 
   }
 
@@ -277,13 +219,13 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
     control: (provided, state) => ({
       ...provided,
       backgroundColor: 'transparent',
-      boxShadow: 'none',
+      // boxShadow: 'none',
       border: state.isFocused ? '2px solid green' : provided.border,
       '&:hover': {
         borderColor: 'green',
       },
-      boxShadow: state.isFocused ? '0 0 0 5px green' : provided.boxShadow,
-      boxShadow: state.isFocused ? null : null,
+      boxShadow: state.isFocused ? '0 0 0 1px green' : provided.boxShadow,
+      // boxShadow: state.isFocused ? null : null,
       height: '12px',
       minHeight: '32px',
       marginLeft : '12px',
@@ -293,12 +235,13 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
       width:'200px',
     }),
 
-    valueContainer: (provided) => ({
-      ...provided,
-      border: state.isFocused ? '1px solid red' : provided.border,
-      height: '28px',
-      padding: '0 12px'
-    }),
+    // valueContainer: (provided) => ({
+    //   ...provided,
+    //   border: state.isFocused ? '1px solid red' : provided.border,
+    //   height: '28px',
+    //   padding: '0 12px'
+    // }),
+
     input: (provided) => ({
       ...provided,
       margin: '0px',
@@ -344,12 +287,17 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
       maxHeight: '150px',
       overflow: 'auto'
     }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? 'white' : state.isFocused ? 'lightgray' : null,
+      color: "grey"
+    }),
   }
   
 
   return (
     <div>
-      <form onSubmit={handleSubmitNew} className='new_ticket' id='new_ticket'>
+      <form onSubmit={onAjout} className='new_ticket' id='new_ticket'>
         <label className='label_ticket' id='label_ticket'>Ticket nᵒ{ticket_num}</label>
         <input readOnly type="text" className='ticket_num' id='ticket_num' value={ticket_num}  />
         <div className='container_motif_m'>
@@ -358,7 +306,7 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
             <Select
               placeholder = "Services"
               styles={customStyle}
-              options={options}
+              options={optionsTicket}
               value={services}
               onChange={handleChange}
               isClearable
@@ -372,8 +320,14 @@ export default function NewTicket({ ticket , setTicket  , scrollToBottom ,scroll
         <input readOnly type="text" className='ticket_num_m' id='ticket_num_m' />
         <input readOnly type="text" className='ticket_stat_m' id='ticket_stat_m' />
         <div className='container_motif_m'>
-          <input type="text" className='Motif_m' id='Motif_m' onChange={remplir_modif}/>
-          <button className='btn_delete_all' type='Button' id='btn_del' onClick={vider_modif} > X </button>
+        <Select
+              placeholder = "Services"
+              styles={customStyle}
+              options={optionsTicket}
+              value={services}
+              onChange={handleChange}
+              isClearable
+            />
         </div>
         <button className='btn_valider' type='submit'> Valider </button>
       </form>

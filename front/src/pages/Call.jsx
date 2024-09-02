@@ -27,7 +27,7 @@ export default function Call() {
           <TableCall call={Call}  fetchData={fetchData} />      
         </div>
         <div className='displayOutput'>
-          <DisplayCall num={disp[0]} motif={disp[1]} isAffiche={isAffiche} activate={active_call} suivant={suivant} En_fil={En_fil} call={Call} setAffichage={setAffichage} add={add_status} />
+          <DisplayCall num={disp[0]} service={disp[1]} isAffiche={isAffiche} activate={active_call} suivant={suivant} En_fil={En_fil} call={Call} setAffichage={setAffichage} add={add_status} />
         </div> 
       </div>
     </>

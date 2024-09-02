@@ -3,9 +3,9 @@ import React, { useEffect } from 'react'
 export default function TableDisplay({call, setCall , fetchData}) {
 
 
-   useEffect( ()=>{
-      fetchData()
-   },[])
+   // useEffect( ()=>{
+   //    fetchData()
+   // },[])
 
    return (
       <>
@@ -14,7 +14,7 @@ export default function TableDisplay({call, setCall , fetchData}) {
                <thead>
                   <tr>
                   <th>Ticket</th>
-                  <th>Motif</th>
+                  <th>dep</th>
                   <th>Ticket Status</th>
                   <th>Action</th>
                   </tr>

@@ -16,7 +16,7 @@ export default function PrintTicket() {
                     <div id='printing'>
                         <div>
                             <p id='numero_ticket_print'>Ticket numero</p>
-                            <p id='motif_ticket_print'>motif</p>
+                            <p id='motif_ticket_print'>Service </p>
                         </div>
                     </div>
                 </div>                
@@ -25,3 +25,4 @@ export default function PrintTicket() {
     </div>
   )
 }
+; 

@@ -19,7 +19,7 @@ class ServiceController extends Controller
         $service =new Service;
         $service->service_name = $request->service_name ;
         $service->save() ;
-        return response()->json($service); 
+        return response()->json($service);
     }
 
 

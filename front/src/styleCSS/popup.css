@@ -100,6 +100,17 @@
 
 .print_popup{
     margin-top: 15px;
+    width: 8vw;
+    height: 4vh;
+    cursor: pointer;
+    color: white;
+    background-color: rgba(20, 179, 94, 0.881) ;
+    border: none;
+    border-radius:8px;
+}
+
+.print_popup:hover{
+    background-color: rgba(17, 159, 83, 0.881) ;
 }
 
 .close_container{
@@ -108,10 +119,19 @@
     text-align: right;
 }
 .close_popup{
-    background-color: red;
+    background-color: rgb(251, 98, 98);
     margin-right: 10px;
     top: 0px;  
     cursor: pointer;
+    border: none;
+    color: #fffdfd;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.close_popup:hover{
+    background-color: rgb(231, 65, 65);
 }
 
 @media (min-height:860px){
